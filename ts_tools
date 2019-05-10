@@ -1,0 +1,45 @@
+import pandas as pd
+import numpy as np
+
+def ts_shift_net(df, x):
+    """
+    shift all columns of dataframe by x days
+
+    :param df: dataframe
+    :param x: number of days for shift, list if multiple shifts
+    :return: output df after dropping n/a
+    """
+    ts = df.copy()
+    for col in ts.columns:
+        for i in x:
+            ts[col + "_" + str(i) + "d shift"] = ts[col].shift(i)
+
+    ts = ts.dropna()
+
+    return ts
+
+def ts_shift_per(df, x):
+    """
+    shift all columns of dataframe by x days
+
+    :param df: dataframe
+    :param x: number of days for shift, list if multiple shifts
+    :return: output df after dropping n/a
+    """
+    ts = df.copy()
+    for col in ts.columns:
+        for i in x:
+            ts[col + "_" + str(i) + "d shift"] = ts[col].pct_change(periods=i)
+
+    ts = ts.dropna()
+
+    return ts
+
+def merge_split(df1,df2):
+    T1 = df1.copy()
+    T2 = df2.copy()
+    
+    out1 = T1[T1.index.isin(T2.index)]
+    out2 = T2[T2.index.isin(T1.index)]
+    
+    return out1,out2
