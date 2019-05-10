@@ -1,0 +1,10 @@
+import pandas as pd
+
+def merge_split(df1,df2):
+    T1 = df1.copy()
+    T2 = df2.copy()
+    
+    out1 = T1[T1.index.isin(T2.index)]
+    out2 = T2[T2.index.isin(T1.index)]
+    
+    return out1,out2
